@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from registration.models import User
+from registration.models import Projects, User
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -27,20 +27,22 @@ class RegisterSerializer(serializers.ModelSerializer):
             email=validated_data["email"],
         )
 
-# class RegistrationSerializers(serializers.ModelSerializer):
+class ProjectSerializer(serializers.ModelSerializer):
 
+    class Meta:
+        models = Projects
+        fields = ['title', 'description', 'type', 'author_user_id']
+
+
+# class ProjectDetailSerializer(serializers.ModelSerializer):
+#     projects = serializers.SerializerMethodField()
 #     class Meta:
-#         model = User
-#         fields = ['first_name', 'last_name', 'email', 'password']
+#         model = Projects
+#         fields = ['title', 'description', 'type', 'author_user_id']
 
-#     def save(self):
-#         user = User(
-#             first_name=self.validated_data['first_name'],
-#             last_name=self.validated_data['last_name'],
-#             email=self.validated_data['email']
-#         )
-#         password = self.validated_data['password']
-
-#         user.set_password(password)
-#         user.save()
-#         return user
+#     def get_projects_user(self, instance, request):
+#         # instance = instance de la catégorie consultée
+#         # appelée autant de fois qu'il y a d'entité dans le cas d'une liste
+#         queryset = instance.projects.filter(author_user_id=request.user)
+#         serializer = ProjectSerializer(queryset, many=True)
+#         return serializer.data

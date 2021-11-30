@@ -10,11 +10,10 @@ class User(AbstractUser):
     last_name = models.CharField(max_length=50)
     email = models.EmailField(max_length=88)
 
-    
-    # user_id = models.IntegerField(auto_created=True)
-        # first_name = models.CharField(max_length=50)
-    # last_name = models.CharField(max_length=50)
-    # email = models.EmailField(max_length=88)
-    # password = models.CharField(max_length=12)
-    # password2 = models.CharField(max_length=12)
 
+class Projects(models.Model):
+
+    title = models.CharField(max_length=255)
+    description = models.CharField(max_length=255)
+    type = models.CharField(max_length=255)
+    author_user_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name='author_user_id')
