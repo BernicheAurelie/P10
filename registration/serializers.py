@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from registration.models import Projects, User
+from registration.models import Comments, Contributors, Issues, Projects, User
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -30,19 +30,30 @@ class RegisterSerializer(serializers.ModelSerializer):
 class ProjectSerializer(serializers.ModelSerializer):
 
     class Meta:
-        models = Projects
-        fields = ['title', 'description', 'type', 'author_user_id']
+        model = Projects
+        fields = ['id', 'title', 'description', 'type', 'author_user_id']
 
 
-# class ProjectDetailSerializer(serializers.ModelSerializer):
-#     projects = serializers.SerializerMethodField()
-#     class Meta:
-#         model = Projects
-#         fields = ['title', 'description', 'type', 'author_user_id']
+class ContributorSerializer(serializers.ModelSerializer):
 
-#     def get_projects_user(self, instance, request):
-#         # instance = instance de la catégorie consultée
-#         # appelée autant de fois qu'il y a d'entité dans le cas d'une liste
-#         queryset = instance.projects.filter(author_user_id=request.user)
-#         serializer = ProjectSerializer(queryset, many=True)
-#         return serializer.data
+    class Meta:
+        model = Contributors
+        fields = ['id', 'user_id', 'project_id', 'role']
+
+
+class IssueSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Issues
+        fields = [
+            'id', 'title', 'desc', 'tag', 'priority', 'project_issue_id', 
+            'status', 'author_id', 'assignee_user_id', 'created_time'
+            ]
+
+
+class CommentSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Comments
+        fields = ['id', 'author_project_user_id', 'issue_id', 'description', 'created_time']
+

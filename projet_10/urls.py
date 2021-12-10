@@ -14,20 +14,34 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
-from rest_framework import routers
+
 from django.contrib import admin
 from django.urls import path, include
-from registration.views import ProjectViewSet
 
-
-router = routers.SimpleRouter()
-router.register('projects', ProjectViewSet, basename='projects')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('registration.urls')),
-    path('api-auth/', include('rest_framework.urls')),
-    path('api/login/', TokenObtainPairView.as_view(), name='obtain_tokens'),
-    path('api/login/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    path('api/', include(router.urls)),
+    path('login/', TokenObtainPairView.as_view(), name='obtain_tokens')
 ]
+
+# projects_router = routers.SimpleRouter(trailing_slash=False)
+# projects_router.register(r"projects/?", views.ProjectViewSet)
+
+# users_router = routers.NestedSimpleRouter(projects_router, r"projects/?", lookup="projects", trailing_slash=False)
+# users_router.register(r"users/?", views.ContributorViewSet, basename="users")
+
+# issues_router = routers.NestedSimpleRouter(projects_router, r"projects/?", lookup="projects", trailing_slash=False)
+# issues_router.register(r"issues/?", views.IssueViewSet, basename="issues")
+
+# comments_router = routers.NestedSimpleRouter(issues_router, r"issues/?", lookup="issues", trailing_slash=False)
+# comments_router.register(r"comments/?", views.CommentViewSet, basename="comments")
+
+# urlpatterns = [
+#     path("", include(projects_router.urls)),
+#     path("", include(users_router.urls)),
+#     path("", include(issues_router.urls)),
+#     path("", include(comments_router.urls)),
+#     path("signup", views.RegisterApi.as_view()),
+#     path("login", obtain_jwt_token),
+# ]
